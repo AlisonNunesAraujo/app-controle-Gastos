@@ -2,7 +2,7 @@ import React from "react";
 import { AuthProvider } from "../contextApi/context";
 import { useContext } from "react";
 
-import Tabs from "./authdrawer";
+import Tabs from "./authtab";
 import RouteStack from "./authstack";
 
 

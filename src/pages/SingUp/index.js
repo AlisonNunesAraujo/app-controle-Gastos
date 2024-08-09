@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
+  ActivityIndicator
 } from "react-native";
 
 import { AuthProvider } from "../../contextApi/context";
@@ -14,7 +15,7 @@ import { useContext } from "react";
 
 export default function SignUp() {
 
-    const{SingUp} = useContext(AuthProvider)
+    const{SingUp, loading} = useContext(AuthProvider)
 
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
@@ -39,7 +40,13 @@ export default function SignUp() {
         
 
         <TouchableOpacity style={styles.buttom} onPress={HendlePost}>
-          <Text style={styles.text}>Cadastrar</Text>
+          {
+            loading ? (
+              <ActivityIndicator size={30} color={'white'}/>
+            ) : (
+              <Text style={styles.text}>Cadastrar</Text>
+            )
+          }
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>

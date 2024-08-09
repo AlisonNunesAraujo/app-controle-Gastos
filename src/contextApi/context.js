@@ -1,52 +1,60 @@
-import React,{createContext, useState} from "react";
+import React, { createContext, useState } from "react";
 
 import api from "../services";
 import { useNavigation } from "@react-navigation/native";
 
 export const AuthProvider = createContext({});
 
-export default function AuthContext({children}){
+export default function AuthContext({ children }) {
+  const [user, setUser] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
 
-    const [user, setUser] = useState(false)
-    const navigation = useNavigation();
+  async function SingUp(nome, email, password) {
+    setLoading(true);
+    try {
+      const response = await api.post("/users", {
+        name: nome,
+        password: password,
+        email: email,
+      });
 
-    async function SingUp(nome, email, password){
-       try{
-            const response = await api.post('/users',{
-                name: nome,
-                password: password,
-                email: email,
-            })
-
-            navigation.goBack();
-       }catch(err){
-        console.log(err)
-       }
-        
+      setLoading(false);
+      navigation.goBack();
+    } catch (err) {
+      console.log(err);
     }
 
-    async function SingIn(email, password){
-        try{
-            const resposta = await api.post('login',{
-                email: email,
-                password: password,
-            })
+    setLoading(false);
+  }
 
-            const {name, token,id} = resposta.data
+  async function SingIn(email, password) {
+    setLoading(true);
+    try {
+      const resposta = await api.post("login", {
+        email: email,
+        password: password,
+      });
 
-            api.defaults.headers['Authorization'] = `Bearer ${token}`
+      const { name, token, id } = resposta.data;
 
-            setUser(id,email,name)
+      api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-        }catch(err){
-            console.log(err)
-        }
+      setUser(id, email, name);
 
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
     }
 
-    return(
-        <AuthProvider.Provider value={{Signed: !!user, SingUp , SingIn}}>
-            {children}
-        </AuthProvider.Provider>
-    )
+    setLoading(false);
+  }
+
+  return (
+    <AuthProvider.Provider
+      value={{ Signed: !!user, user, SingUp, SingIn, loading }}
+    >
+      {children}
+    </AuthProvider.Provider>
+  );
 }

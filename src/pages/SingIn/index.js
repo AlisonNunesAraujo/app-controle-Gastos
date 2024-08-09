@@ -3,7 +3,8 @@ import { View,Text, TextInput,
 Keyboard,
 TouchableOpacity,
 TouchableWithoutFeedback,
-StyleSheet } from 'react-native'
+StyleSheet,
+ActivityIndicator } from 'react-native'
 
 
 import { AuthProvider } from '../../contextApi/context';
@@ -17,7 +18,7 @@ export default function SingIn(){
 
     const navigation = useNavigation();
 
-    const {user,SingIn} = useContext(AuthProvider)
+    const {user,SingIn, loading} = useContext(AuthProvider)
 
     function HendleLogin(){
         SingIn(email,password)
@@ -33,7 +34,14 @@ export default function SingIn(){
                 <TextInput placeholder='senha' keyboardType='numeric' secureTextEntry style={styles.input} value={password} onChangeText={setPassword}/>
 
                 <TouchableOpacity style={styles.buttom} onPress={HendleLogin}>
-                    <Text style={styles.textbutom}>Entrar</Text>
+                    {
+                        loading ? (
+                            <ActivityIndicator size={30} color={'white'}/>
+                        ) : (
+                            <Text style={styles.textbutom}>Entrar</Text>
+                        )
+                    }
+  
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={ () => navigation.navigate("SingUp") }>
