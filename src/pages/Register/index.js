@@ -16,42 +16,37 @@ import api from "../../services";
 import { format } from "date-fns";
 
 export default function RegisterItem() {
+  const [description, setDescription] = useState("");
+  const [valor, setValor] = useState("");
 
+  async function RegisterType(tipo) {
+    try {
+      await api.post("/receive", {
+        description: description,
+        value: Number(valor),
+        type: tipo,
+        date: format(new Date(), "dd/MM/yyyy"),
+      });
 
-    const [description, setDescription] = useState('')
-    const [valor, setValor] = useState('')
+      Alert.alert("Registrado", "Seu item foi registrado!");
 
-
-  async  function RegisterType(tipo){
-        try{
-            await  api.post('/receive',{
-                description: description,
-                value: Number(valor),
-                type: tipo,
-                date: format(new Date(), 'dd/MM/yyyy')
-            })
-
-            Alert.alert('Registrado', 'Seu item foi registrado!')
-
-            setDescription('')
-            setValor('')
-
-        }catch(err){
-            console.log(err)
-        }
+      setDescription("");
+      setValor("");
+    } catch (err) {
+      console.log(err);
     }
-
-
-
-
-
+  }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container}>
         <View style={styles.register}>
-          
-          <TextInput placeholder="Digite uma descrição" value={description} onChangeText={setDescription} style={styles.input} />
+          <TextInput
+            placeholder="Digite uma descrição"
+            value={description}
+            onChangeText={setDescription}
+            style={styles.input}
+          />
           <TextInput
             placeholder="Digite o valor"
             keyboardType="numeric"
@@ -59,15 +54,20 @@ export default function RegisterItem() {
             onChangeText={setValor}
             style={styles.input}
           />
-          
         </View>
 
         <View style={styles.safeButtom}>
-          <TouchableOpacity style={styles.buttom} onPress={ () => RegisterType('receita') }>
+          <TouchableOpacity
+            style={styles.buttom}
+            onPress={() => RegisterType("receita")}
+          >
             <Text style={styles.textButtom}>Receita</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttom} onPress={ () => RegisterType('despesa') }>
+          <TouchableOpacity
+            style={styles.buttom}
+            onPress={() => RegisterType("despesa")}
+          >
             <Text style={styles.textButtom}>Despesa</Text>
           </TouchableOpacity>
         </View>
@@ -77,13 +77,12 @@ export default function RegisterItem() {
 }
 
 const styles = StyleSheet.create({
-  
   register: {
     width: "100%",
     height: 200,
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     width: "90%",
     padding: 20,
     marginTop: 20,
@@ -104,9 +103,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 0.3,
   },
-  textButtom:{
-    color: 'black',
+  textButtom: {
+    color: "black",
     fontSize: 15,
-    fontWeight: '600',
-  }
+    fontWeight: "600",
+  },
 });

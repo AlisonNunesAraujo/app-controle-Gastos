@@ -12,7 +12,7 @@ export default function RouteStack(){
 
     return(
         <Stack.Navigator>
-            <Stack.Screen name="SingIn" component={SingIn} options={{headerShown: false,}}/>
+            <Stack.Screen name="SingIn" component={SingIn} options={{headerShown: false, headerTitle: 'Voltar'}}/>
             <Stack.Screen name="SingUp" component={SingUp} options={{title: 'Cadastro'}}/>
         </Stack.Navigator>
 

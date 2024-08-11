@@ -50,9 +50,13 @@ export default function AuthContext({ children }) {
     setLoading(false);
   }
 
+  function LogOut(){
+    setUser(false)
+}
+
   return (
     <AuthProvider.Provider
-      value={{ Signed: !!user, user, SingUp, SingIn, loading }}
+      value={{ Signed: !!user, user, SingUp, SingIn, loading,LogOut }}
     >
       {children}
     </AuthProvider.Provider>
